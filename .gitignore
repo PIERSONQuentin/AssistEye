@@ -1,0 +1,5 @@
+# Ignorer les fichiers de modèles d'IA
+*.pt
+
+# Ignorer les fichiers vidéo
+*.mp4

@@ -1,0 +1,65 @@
+# AssistEye Default Configuration File
+
+general:
+  detection_model_name: "yolo11n.pt"
+  depth_model_name: "MiDaS_small"
+  text_model_name: "pytesseract"
+  device: "auto"  # Options: "auto", "cpu", "gpu"
+  confidence_threshold: 0.5 # Confidence threshold for object detection
+  language: "fr" # Options: "en", "fr"
+  path: "/Users/quentinpierson/Documents/AssistEye-Module" # Absolute path to the module directory
+  voice: "auto" # Options: "auto", "male", "female"
+  unit_system: "steps" # Options: "meters", "feet", "steps"
+
+debug:
+  show_fps: true
+  log_level: "info" 
+  # Options: 
+  # "debug" : Detailed information for debugging purposes
+  # "info" : Informational messages that confirm things are working as expected
+  # "error" : return error or warning messages that indicate a problem, these messages are send to a server for analysis and improvement
+
+translations:
+  fr:
+    labels:
+      person: "personne"
+      car: "voiture"
+      bus: "bus"
+      cell phone: "téléphone"
+      # Ajoutez d'autres traductions si nécessaire
+    # commands:
+    #   count_objects: 
+    #   closest_object: 
+    #   read_text:
+    #   change_language: 
+    #   change_voice: 
+    responses:
+      no_objects: "Je ne détecte aucun(e) {object} autour de vous."
+      count_objects: "Il y a {count} {object} autour de vous."
+      closest_object: "Le {object} le plus proche est à environ {distance} mètres."
+      config_update_success: "Le paramètre '{param}' a été mis à jour avec succès."
+      config_update_error: "Une erreur est survenue lors de la mise à jour du paramètre '{param}'."
+      unknown_command: "Je n'ai pas compris votre demande."
+      too_close: "Trop proche"
+      too_far: "Hors de portée"
+      unknown_distance: "Distance inconnue"
+      
+  en:
+    labels:
+      person: "person"
+      car: "car"
+      bus: "bus"
+      cell phone: "phone"
+      # Add other translations as needed 
+    responses:
+      no_objects: "I don't detect any {object} around you."
+      count_objects: "There are {count} {object}(s) around you."
+      closest_object: "The closest {object} is approximately {distance} meters away."
+      config_update_success: "Parameter '{param}' has been successfully updated."
+      config_update_error: "An error occurred while updating parameter '{param}'."
+      unknown_command: "I didn't understand your request."
+      too_close: "Too close"
+      too_far: "Out of range"
+      unknown_distance: "Unknown distance"
+
+  # Ajoutez d'autres langues ici

@@ -1,7 +1,7 @@
 """
-Detection Module
+Detection Package
 
-This module provides functionalities for object detection using YOLO models.
+This package provides modules for object and text detection using YOLO and Tesseract models.
 """
 
 __all__ = ['objectDetection', 'textDetection']

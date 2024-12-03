@@ -16,7 +16,7 @@ from AssistEye import depth
 
 config = {}
 
-def visualization_init(config_dict):
+def initialization(config_dict):
     """
     Initialize the visualization module with configuration.
 

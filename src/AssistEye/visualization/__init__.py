@@ -1,9 +1,7 @@
 """
-Visualization Module
+Visualization Package
 
-This module provides functionalities for visualizing detection results.
+This package provides modules for visualizing detection results.
 """
 
-from .visualization import visualization_init, draw_bounding_boxes
-
-__all__ = ['visualization_init', 'draw_bounding_boxes']
+__all__ = ['visualization']

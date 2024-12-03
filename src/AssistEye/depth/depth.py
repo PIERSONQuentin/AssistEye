@@ -24,7 +24,7 @@ model = None
 transform = None
 unit_system = "steps" # Default unit system for distance
 
-def depth_init(model_name, device_name):
+def initialization(model_name, device_name):
     """
     Initialize the MiDaS model for depth estimation.
 
@@ -62,19 +62,21 @@ def estimate_depth(image):
     
 
     
-def convert_depth_to_distance(mean_depth, scale_factor=0.5, min_distance=0.1, max_distance=100):
+def convert_depth_to_distance(mean_depth):
     """
     Convert a mean depth value to distance in the desired unit system.
 
     Args:
         mean_depth (float): The mean depth value.
-        scale_factor (float): The calibration factor for distance.
-        min_distance (float): Minimum valid distance (in meters).
-        max_distance (float): Maximum valid distance (in meters).
 
     Returns:
         float or str: The estimated distance in the specified unit, or a string indicating 'too_close' or 'too_far'.
     """
+    # Retrieve the calibration factor and valid distance range from the configuration file
+    scale_factor = config.config_data['depth']['scale_factor']
+    min_distance = config.config_data['depth']['min_distance']
+    max_distance = config.config_data['depth']['max_distance']
+
     if mean_depth <= 0:
         return 'too_close'
 

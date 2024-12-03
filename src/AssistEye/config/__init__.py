@@ -1,9 +1,7 @@
 """
-Config Module
+Config Package
 
-This module provides functionalities for loading configuration and selecting devices.
+This package provides modules for loading and update configuration.
 """
 
-from .config import config_data, device, update_config_param
-
-__all__ = ['config_data', 'device', 'update_config_param']
+__all__ = ['config']

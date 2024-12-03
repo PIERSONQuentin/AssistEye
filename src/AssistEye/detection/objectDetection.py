@@ -14,7 +14,9 @@ from ultralytics import YOLO
 import numpy as np
 import cv2
 from PIL import Image
-from AssistEye import config, depth, visualization
+from AssistEye import config
+from AssistEye.depth import depth
+from AssistEye.visualization import visualization
 
 model = None  # Will be initialized in the initialize function
 

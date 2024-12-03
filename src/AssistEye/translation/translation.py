@@ -12,7 +12,7 @@ Available functions:
 translations = {}
 current_language = "fr"
 
-def translation_init(translations_dict, default_language="fr"):
+def initialization(translations_dict, default_language="fr"):
     """
     Initialize the translator with available translations.
 

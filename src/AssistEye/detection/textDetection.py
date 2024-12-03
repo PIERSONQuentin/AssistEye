@@ -29,39 +29,7 @@ def initialization(model_name, device_name):
     # Set the global model
     global model
     model = pytesseract
-'''
-def detect(frame):
-    """
-    Perform text detection on an image.
 
-    Args:
-        frame (numpy.ndarray): The image on which to perform text detection.
-    
-    Returns:
-        dict: The detection results.
-    """
-    # Preprocessing the image to improve the quality of the OCR
-    # Convert to grayscale
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    
-    # Apply a bilateral filter to reduce noise while keeping edges sharp
-    filtered = cv2.bilateralFilter(gray, 11, 17, 17)
-    
-    # Apply adaptive thresholding for better text separation
-    thresh = cv2.adaptiveThreshold(
-        filtered, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
-    )
-    
-    # Optionally, invert the image (useful for dark text on a light background)
-    inverted = cv2.bitwise_not(thresh)
-    
-    # Convert image back to RGB for OCR
-    img_rgb = cv2.cvtColor(inverted, cv2.COLOR_GRAY2RGB)
-    
-    # Perform OCR
-    results = model.image_to_data(img_rgb, output_type=pytesseract.Output.DICT)
-    return results
-'''
 
 def detect(frame):
     """
@@ -104,6 +72,7 @@ def detect(frame):
 
     return best_results
 
+    
 
 
 
@@ -133,18 +102,63 @@ def process_results(results):
 
     return detected_texts, text_positions
 
-def run_inference(path, annotations):
+# def run_inference(path, annotations):
     """
-    Run inference on an image or video file with specified annotations.
+    Run inference on an image or video file or array with specified annotations.
 
     Args:
         path (str): The path to the image or video file.
         annotations (dict): Dictionary specifying which annotations to include.
     """
-    # Load the image
+    # Load the image 
     frame = cv2.imread(path)
     if frame is None:
         print("Error loading image")
+        return
+
+    # Detect text in the image
+    results = detect(frame)
+
+    # Process the detection results
+    detected_texts, text_positions = process_results(results)
+
+    # Annotate the image if needed
+    if annotations.get('class', False):
+        for (text, (x, y, w, h)) in zip(detected_texts, text_positions):
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            if annotations.get('confidence', False):
+                cv2.putText(frame, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+    # Convert image from BGR to RGB
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+    # Display the annotated image using plt
+    import matplotlib.pyplot as plt
+    plt.imshow(frame_rgb)
+    plt.title("Text Detection")
+    plt.axis('off')  # Hide axis
+    plt.show()
+
+def run_inference(path_or_array, annotations):
+    """
+    Run inference on an image or video file or array with specified annotations.
+
+    Args:
+        path_or_array (str or numpy.ndarray): The path to the image or video file, or the image array.
+        annotations (dict): Dictionary specifying which annotations to include.
+    """
+    # Check if input is a path or an image array
+    if isinstance(path_or_array, str):
+        # Load the image from the path
+        frame = cv2.imread(path_or_array)
+        if frame is None:
+            print("Error loading image")
+            return
+    elif isinstance(path_or_array, np.ndarray):
+        # Use the provided image array
+        frame = path_or_array
+    else:
+        print("Invalid input type. Provide a file path or an image array.")
         return
 
     # Detect text in the image

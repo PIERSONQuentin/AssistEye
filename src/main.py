@@ -1,6 +1,9 @@
 import cv2
 from AssistEye.detection import objectDetection
-from AssistEye import depth, translation, voiceAssistant, visualization
+from AssistEye.depth import depth
+from AssistEye.translation import translation
+from AssistEye.voiceAssistant import voiceAssistant
+from AssistEye.visualization import visualization
 
 # Main function to run the AssistEye application POC.
 def main():

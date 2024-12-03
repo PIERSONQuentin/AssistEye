@@ -17,7 +17,7 @@ engine = pyttsx3.init()
 recognizer = sr.Recognizer()
 translator = None  # This will be set with the initialize function
 
-def voiceAssistant_init(translator_instance):
+def initialization(translator_instance):
     """
     Initialize the voice assistant with speech synthesis and recognition.
 

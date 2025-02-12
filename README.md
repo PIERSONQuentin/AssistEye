@@ -61,7 +61,7 @@ assist_eye/
 │   └── textDetection.py
 ├── translation/
 │   ├── __init__.py
-│   └── translator.py
+│   └── translation.py
 ├── visualization/
 │   ├── __init__.py
 │   └── visualization.py

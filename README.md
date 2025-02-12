@@ -74,9 +74,8 @@ assist_eye/
 - **detection/** : Regroupe les modules de détection d'objets, d'estimation de profondeur et de détection de texte.
 - **translation/** : Contient le module de traduction pour gérer la traduction des étiquettes et des réponses.
 - **visualization/** : Fournit des fonctions pour l'annotation et l'affichage des résultats.
-- **voice_assistant/** : Gère l'assistance vocale avec enregistrement et traitement des commandes.
+- **voiceAssistant/** : Gère l'assistance vocale avec enregistrement et traitement des commandes.
 - **api/** : Expose une API REST pour l'intégration externe.
-- **utils/** : Regroupe des utilitaires, notamment pour la gestion des logs.
 
 ---
 

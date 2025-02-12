@@ -13,7 +13,6 @@ AssistEye est un module complet destiné à fournir des fonctionnalités d'assis
   - [Exécution de l'application](#exécution-de-lapplication)
   - [Utilisation de l'API](#utilisation-de-lapi)
   - [Exemple d'intégration Notebook](#exemple-dintégration-notebook)
-- [Contribuer](#contribuer)
 
 ---
 

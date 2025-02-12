@@ -1,137 +1,175 @@
-# Project Architecture
+# AssistEye
 
-```
-├── config 
-│   ├── config.yaml 
-├── notebooks 
-│   ├── example_integration.ipynb 
-├── src 
-│   ├── AssistEye 
-│   │   ├── __init__.py 
-│   │   ├── api
-│   │   │   ├── __init__.py 
-│   │   │   ├── api.py 
-│   │   ├── config
-│   │   │   ├── __init__.py 
-│   │   │   ├── config.py 
-│   │   ├── debug
-│   │   │   ├── __init__.py 
-│   │   │   ├── debug.py 
-│   │   ├── depth
-│   │   │   ├── __init__.py 
-│   │   │   ├── depth.py 
-│   │   ├── detection
-│   │   │   ├── __init__.py 
-│   │   │   ├── detection.py
-│   │   ├── translation
-│   │   │   ├── __init__.py 
-│   │   │   ├── translation.py 
-│   │   ├── visualization
-│   │   │   ├── __init__.py 
-│   │   │   ├── visualization.py
-│   │   ├── voiceAssistant
-│   │   │   ├── __init__.py 
-│   │   │   ├── voiceAssistant.py 
-│   ├── main.py
-├── README.md 
-```
+AssistEye est un module complet destiné à fournir des fonctionnalités d'assistance visuelle et vocale. Il intègre la détection d'objets, l'estimation de profondeur, la détection de texte, la traduction multilingue, un assistant vocal interactif et une visualisation avancée. Ce projet a pour objectif d'aider les personnes malvoyantes et d'offrir une solution d'assistance intelligente dans divers contextes (domestique, professionnel, mobilité, etc.).
 
-### File Details
+---
+## Table des matières
 
-- **config**
-  - `config.yaml`: Main configuration file for the project.
-
-- **notebooks**
-  - `example_integration.ipynb`: Example notebook demonstrating the integration of the AssistEye module.
-
-- **src**
-  - **AssistEye**
-    - `__init__.py`: Initialization file for the AssistEye module.
-    - `config.py`: Configuration management.
-    - `depth.py`: Model and functions for depth estimation.
-    - `detection.py`: Model and functions for object detection.
-    - `translation.py`: Translation management.
-    - `visualization.py`: Functions for visualizing results.
-    - `voice.py`: Management of speech synthesis and recognition.
-  - `main.py`: Main script to run the AssistEye application.
-
-  ### Features of AssistEye Module
-
-  The AssistEye module offers a range of functionalities designed to enhance user experience through advanced computer vision and natural language processing techniques. Below are the key features:
-
-  - **Configuration Management**: Easily manage and customize settings using the `config.yaml` file.
-  - **Depth Estimation**: Utilize the `depth.py` module to estimate the depth of objects in images.
-  - **Object Detection**: Detect and identify objects within images using the `detection.py` module.
-  - **Translation Services**: Translate text between different languages with the `translation.py` module.
-  - **Visualization Tools**: Visualize data and results effectively using the `visualization.py` module.
-  - **Voice Assistant**: Integrate speech synthesis and recognition capabilities with the `voice.py` module.
-
-  These features collectively enable the AssistEye module to provide comprehensive support for various applications in computer vision and natural language processing.
-
-
-
-
-  choses a mettres en place : 
-
-- **Ajout de nouvelles commandes et fonctionnalités** : 
-  - Commande pour que le voiceAssistant lise le texte détecté a l'utilisateur 
-  - commandes pour changer les paramètres en modifiant dirrectement le fichier config.yaml
-    - changer la langue 
-  - changer la voix du voiceAssistant (utiliser autre chose que le TTS actuel)
-
-- **Alternative à speech_recognition pour une plus grande variété de voix**
-
-- **Personnalisation des commandes selon les préférences de l'utilisateur** : adapter les réponses en fonction de la rapidité et de la précision désirées par chaque utilisateur
-
-- **Paramètres pour les unités de mesure** : proposer des options de changement entre mètres, pieds, pas ou autres unités (unité par défaut "pas")
-
-- **Support multilingue** : ajout de l'anglais, par exemple (déjà fait mais a tester, modifier la gestion dans process_command pour prendre en charge les mots clés pour plusieurs langues)
-
-- **Amélioration de la réponse vocale pour une meilleure contextualisation** : rendre les réponses plus naturelles et éviter les répétitions (par exemple, dire "À votre gauche" au lieu de "proche de vous").
-  - Ajouter l'implémentation test de découpage de la zone de détection en zone pour avoir une meilleure contextualisation 
-
-
-
-  ### Modules 
-
-  Detection : 
-  - objectDetection : Identifier les objets dans l'espace 
-
-  - textDetection : Détecter le texte dans l'espace 
-
-  - faceDetection : Identifier le visage des personnes dans l'espace 
-
-  - sceneDetection : Identifier le type de scène (plage, forêt, ville) pour des applications de tri d'images ou d'assistance.
-
-  - emotionDetection : Analyser les expressions faciales pour identifier des émotions comme la joie, la tristesse, la colère, etc.
-
-  - anomalyDetection : Détecter des comportements ou objets anormaux dans une scène (sécurité, maintenance)
-
-  - semanticSegmentation : Identifier les différents objets ou zones dans une image en assignant un label à chaque pixel.
-
+- [Fonctionnalités](#fonctionnalités)
+- [Architecture du projet](#architecture-du-projet)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Utilisation](#utilisation)
+  - [Exécution de l'application](#exécution-de-lapplication)
+  - [Utilisation de l'API](#utilisation-de-lapi)
+  - [Exemple d'intégration Notebook](#exemple-dintégration-notebook)
+- [Contribuer](#contribuer)
 
 ---
 
-### **Shared Methods**
-1. **`initialization(model_name, device_name)`**  
-   Initialise le modèle de détection avec le nom du modèle et l’appareil spécifié (par exemple, "CPU" ou "GPU"). Cela configure également tous les paramètres nécessaires au bon fonctionnement du modèle.
+## Fonctionnalités
 
-2. **`detect(frame)`**  
-   Effectue la détection sur une image ou un cadre donné. Retourne les résultats de la détection, incluant les objets détectés, leurs coordonnées, et les scores de confiance.
+- **Détection d'objets**  
+  Utilisation de modèles YOLO pour détecter des objets dans des images ou des vidéos avec un seuil de confiance configurable.
 
-3. **`process_results(results)`**  
-   Traite les résultats de la détection pour extraire des informations utiles telles que les types d’objets, leurs quantités, ou leur position. Peut être étendu pour inclure des calculs personnalisés ou des filtrages.
+- **Estimation de profondeur**  
+  Calcul de la carte de profondeur grâce au modèle MiDaS, permettant d'estimer la distance des objets dans la scène.
 
-4. **`run_inference(path, annotations)`**  
-   Effectue une inférence sur un fichier image ou vidéo donné. Les annotations fournies permettent de spécifier des paramètres supplémentaires, tels que les types d’objets à détecter ou des zones d’intérêt dans l’image.
+- **Détection de texte (OCR)**  
+  Extraction de texte à partir d'images en utilisant Tesseract avec plusieurs prétraitements pour améliorer la précision.
 
-5. **`track_object(results)`** 
-   Suit un ou plusieurs objets détectés dans des séquences d’images ou une vidéo. Retourne les positions et trajectoires des objets suivis au fil du temps.
+- **Traduction et réponses multilingues**  
+  Traduction des étiquettes d'objets et formulation de réponses dans différentes langues (ex. français et anglais).
 
-6. **`batch_detect(frames)`**  
-   Permet de traiter simultanément plusieurs images ou une séquence vidéo. Retourne une liste des résultats de détection pour chaque image ou frame.
+- **Assistance vocale**  
+  Interaction par commande vocale grâce à la reconnaissance (Speech Recognition) et à la synthèse vocale (pyttsx3). Le système est conçu pour être facilement extensible avec de nouvelles commandes via un mécanisme d'enregistrement basé sur des expressions régulières.
 
-7. **`export_results(results, format="json")`** 
-   Exporte les résultats de la détection dans un format spécifié (par défaut, JSON). Peut également supporter d’autres formats comme CSV ou XML pour une meilleure intégration avec d'autres systèmes.
+- **Visualisation et débogage**  
+  Outils de visualisation pour afficher les résultats annotés (boîtes englobantes, distances, niveaux de confiance) sur les images ou les vidéos. Un module de débogage est également intégré pour faciliter le suivi des performances et des erreurs.
+
+- **API REST**  
+  Une API basée sur Flask permet d'exposer les fonctionnalités de détection d'objets et de texte via des endpoints HTTP, facilitant l'intégration dans d'autres applications.
 
 ---
+
+## Architecture du projet
+
+Le projet est organisé de manière modulaire pour faciliter sa maintenance et son évolutivité. Voici un aperçu de la structure des dossiers :
+
+```plaintext
+assist_eye/
+├── __init__.py
+├── api/
+│   ├── __init__.py
+│   └── api.py
+├── config/
+│   ├── __init__.py
+│   └── config.py
+├── detection/
+│   ├── __init__.py
+│   ├── objectDetection.py
+│   ├── depthEstimation.py
+│   └── textDetection.py
+├── translation/
+│   ├── __init__.py
+│   └── translator.py
+├── visualization/
+│   ├── __init__.py
+│   └── visualization.py
+├── voiceAssistant/
+│   ├── __init__.py
+│   └── voiceAssistant.py
+```
+
+- **config/** : Charge et gère la configuration (fichier YAML) du module.
+- **detection/** : Regroupe les modules de détection d'objets, d'estimation de profondeur et de détection de texte.
+- **translation/** : Contient le module de traduction pour gérer la traduction des étiquettes et des réponses.
+- **visualization/** : Fournit des fonctions pour l'annotation et l'affichage des résultats.
+- **voice_assistant/** : Gère l'assistance vocale avec enregistrement et traitement des commandes.
+- **api/** : Expose une API REST pour l'intégration externe.
+- **utils/** : Regroupe des utilitaires, notamment pour la gestion des logs.
+
+---
+
+## Installation
+
+### Prérequis
+
+- **Python 3.7+**
+- **Git** (pour cloner le dépôt)
+- **Tesseract** installé et configuré pour l'OCR  
+  (voir [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) pour l'installation)
+- Les bibliothèques Python suivantes (liste non exhaustive) :
+  - OpenCV
+  - NumPy
+  - PyTorch
+  - Ultralytics (pour YOLO)
+  - pytesseract
+  - SpeechRecognition
+  - pyttsx3
+  - Flask
+  - torchvision
+
+### Installation des dépendances
+
+1. Clonez le dépôt :
+
+   ```bash
+   git clone https://github.com/PIERSONQuentin/AssistEye.git
+   cd AssistEye
+   ```
+
+2. Installez les dépendances via pip :
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+   *(Assurez-vous d'avoir créé et activé un environnement virtuel si nécessaire.)*
+
+---
+
+## Configuration
+
+La configuration d'AssistEye se fait via un fichier YAML (par défaut `config/default.yaml`). Ce fichier permet de définir :
+
+- Les modèles à utiliser pour la détection, l'estimation de profondeur et la détection de texte.
+- Les paramètres généraux (langue, dispositif, seuils de confiance, système d'unités, etc.).
+- Les paramètres spécifiques pour l'estimation de profondeur (facteur d'échelle, distances minimales et maximales).
+- Les traductions pour les étiquettes et les réponses.
+
+Vous pouvez modifier ce fichier ou créer un fichier personnalisé (par exemple, `config/custom.yaml`) et l'indiquer lors du lancement de l'application.
+
+---
+
+## Utilisation
+
+### Exécution de l'application
+
+Pour lancer l'application en mode démonstration via la webcam, exécutez :
+
+```bash
+python src/main.py
+```
+
+Ce script :
+
+- Charge la configuration.
+- Initialise les modules de détection, d'estimation de profondeur, de traduction et d'assistance vocale.
+- Lance la capture vidéo depuis la webcam.
+- Exécute la détection d'objets et l'estimation de profondeur en temps réel.
+- Écoute et traite les commandes vocales.
+
+### Utilisation de l'API
+
+L'API REST est exposée via Flask et permet d'accéder aux fonctionnalités de détection d'objets et de texte. Pour démarrer l'API, exécutez :
+
+```bash
+python src/assist_eye/api/api.py
+```
+
+Les endpoints disponibles sont :
+
+- **POST** `/detect_objects`  
+  Reçoit une image et retourne les détections d'objets ainsi que leurs distances.
+
+- **POST** `/detect_text`  
+  Reçoit une image et retourne le texte détecté ainsi que les positions des zones de texte.
+
+### Exemple d'intégration Notebook
+
+Un notebook d'intégration complet est fourni dans le dossier `notebooks` (par exemple, `notebooks/example_integration.ipynb`). Ce notebook sert de documentation interactive pour apprendre à utiliser les différentes fonctionnalités d'AssistEye.
+
+---
+
+*AssistEye* est conçu pour être une solution modulaire, extensible et facile à maintenir. Nous espérons qu'il répondra à vos besoins et facilitera l'intégration d'une assistance visuelle et vocale dans vos projets.

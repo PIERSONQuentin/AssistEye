@@ -15,7 +15,7 @@ import numpy as np
 import cv2
 from PIL import Image
 from AssistEye import config
-from AssistEye.depth import depth
+from AssistEye.detection import depthEstimation
 from AssistEye.visualization import visualization
 
 model = None  # Will be initialized in the initialize function
@@ -66,7 +66,7 @@ def detect(frame):
             x1, y1, x2, y2 = map(int, bbox[:4].tolist())
             depth_roi = depth_map_normalized[y1:y2, x1:x2]
             mean_depth = np.median(depth_roi)
-            distance = depth.convert_depth_to_distance(mean_depth)
+            distance = depthEstimation.convert_depth_to_distance(mean_depth)
 
             class_id = int(detection.cls[0].item()) if hasattr(detection, 'cls') else None
             class_name = model.names[class_id] if class_id is not None and class_id in model.names else "Objet"
@@ -103,7 +103,7 @@ def detect(frame):
             if depth_map_normalized is not None:
                 depth_roi = depth_map_normalized[y1:y2, x1:x2]
                 mean_depth = np.median(depth_roi)
-                distance = depth.convert_depth_to_distance(mean_depth)
+                distance = depthEstimation.convert_depth_to_distance(mean_depth)
             else:
                 distance = None
 
@@ -149,7 +149,7 @@ def process_results(results, depth_map_normalized=None, return_positions=False):
             if depth_map_normalized is not None:
                 depth_roi = depth_map_normalized[y1:y2, x1:x2]
                 mean_depth = np.median(depth_roi)
-                distance = depth.convert_depth_to_distance(mean_depth)
+                distance = depthEstimation.convert_depth_to_distance(mean_depth)
             else:
                 distance = None
 
@@ -205,7 +205,7 @@ def run_inference(path, annotations):
     if path.lower().endswith(('.png', '.jpg', '.jpeg')):
         # Process image
         image = Image.open(path)
-        depth_map = depth.estimate_depth(image)
+        depth_map = depthEstimation.estimate_depth(image)
         depth_map_normalized = (depth_map - depth_map.min()) / (depth_map.max() - depth_map.min())
 
         # Convert the image to a NumPy array
@@ -232,7 +232,7 @@ def run_inference(path, annotations):
                 if not ret:
                     break
 
-                depth_map_normalized, processed_image = depth.configure_depth_map(frame, depth, display_mode="rgb")
+                depth_map_normalized, processed_image = depthEstimation.configure_depth_map(frame, depthEstimation, display_mode="rgb")
                 results = detect(frame)
                 object_counts, distances = process_results(results, depth_map_normalized)
 

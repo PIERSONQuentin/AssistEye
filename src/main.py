@@ -1,6 +1,6 @@
 import cv2
 from AssistEye.detection import objectDetection
-from AssistEye.depth import depth
+from AssistEye.detection import depthEstimation
 from AssistEye.translation import translation
 from AssistEye.voiceAssistant import voiceAssistant
 from AssistEye.visualization import visualization
@@ -22,7 +22,7 @@ def main():
                 break
 
             # Configure the depth map and process the image.
-            depth_map_normalized, processed_image = depth.configure_depth_map(frame, depth, display_mode="rgb")
+            depth_map_normalized, processed_image = depthEstimation.configure_depth_map(frame, depthEstimation, display_mode="rgb")
 
             # Perform object detection on the captured frame.
             results = objectDetection.detect(frame)

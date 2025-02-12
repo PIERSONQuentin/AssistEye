@@ -16,11 +16,16 @@ def api_init():
     """
     Initialize the API.
     """
-    from AssistEye.detection.objectDetection import detection_init
-    from AssistEye.detection.textDetection import text_detection_init
+    from AssistEye.config import config
+    from AssistEye.detection import objectDetection, textDetection, depthEstimation
 
-    detection_init("yolov5s", "cpu")
-    text_detection_init("frozen_east_text_detection.pb")
+    # Access configuration data and device
+    config_data = config.config_data
+    device = config.device
+
+    objectDetection.initialization(model_name=config_data['general']['detection_model_name'], device_name=device)
+    textDetection.initialization(model_name=config_data['general']['text_model_name'], device_name=device)
+    depthEstimation.initialization(model_name=config_data['general']['depth_model_name'],  device_name=device)
 
 
 def run_api(): 

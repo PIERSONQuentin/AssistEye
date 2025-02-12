@@ -11,7 +11,7 @@ import cv2
 
 import matplotlib.pyplot as plt
 import numpy as np
-from AssistEye import depth
+from AssistEye.detection import depthEstimation
 
 
 config = {}
@@ -184,7 +184,7 @@ def draw_bounding_boxes(image, model, results, annotations, depth_map_normalized
             if np.isnan(mean_depth) or mean_depth <= 0:
                 distance = 'too_close'
             else:
-                distance = depth.convert_depth_to_distance(mean_depth)
+                distance = depthEstimation.convert_depth_to_distance(mean_depth)
 
             class_id = int(detection.cls[0].item()) if hasattr(detection, 'cls') else None
             class_name = model.names[class_id] if class_id is not None and class_id in model.names else "Objet"

@@ -49,7 +49,9 @@ def listen():
         print("Écoute...")
         try:
             audio = recognizer.listen(source, timeout=3)
-            return recognizer.recognize_google(audio, language="fr-FR").lower()
+            voice_command = recognizer.recognize_google(audio, language="fr-FR").lower()
+            print(f"Commande vocale : {voice_command}")
+            return voice_command
         except sr.UnknownValueError:
             print("Je n'ai pas compris.")
         except sr.RequestError as e:
@@ -58,7 +60,8 @@ def listen():
             pass
     return None
 
-def process_command(command, object_counts, distances):
+
+def process_command(command, object_counts, distances, text=None):
     """
     Process a voice command.
 
@@ -66,6 +69,7 @@ def process_command(command, object_counts, distances):
         command (str): The recognized voice command.
         object_counts (dict): Dictionary of detected objects and their counts.
         distances (dict): Dictionary of detected objects and their distances.
+        text (str): The best text detected in the image.
     """
     translated_counts = {translator.translate_label(k): v for k, v in object_counts.items()}
     translated_distances = {translator.translate_label(k): v for k, v in distances.items()}
@@ -89,5 +93,16 @@ def process_command(command, object_counts, distances):
                     response = translator.get_response("no_objects", object=obj_type)
                 respond(response)
                 return
+            
+    if text and text[0] != ['']:
+        if "texte" in command:
+            response = translator.get_response("detected_text", text=text[0])
+            respond(response)
+            return
+        else: 
+            response = translator.get_response("no_text")
+            respond(response)
+            return
 
     respond(translator.get_response("unknown_command"))
+    

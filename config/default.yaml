@@ -32,12 +32,6 @@ translations:
       bus: "bus"
       cell phone: "téléphone"
       # Ajoutez d'autres traductions si nécessaire
-    # commands:
-    #   count_objects: 
-    #   closest_object: 
-    #   read_text:
-    #   change_language: 
-    #   change_voice: 
     responses:
       no_objects: "Je ne détecte aucun(e) {object} autour de vous."
       count_objects: "Il y a {count} {object} autour de vous."
@@ -48,6 +42,8 @@ translations:
       too_close: "Trop proche"
       too_far: "Hors de portée"
       unknown_distance: "Distance inconnue"
+      detected_text: "Le texte détecté est: {text}"
+      no_text: "Aucun texte détecté."
       
   en:
     labels:
@@ -66,5 +62,7 @@ translations:
       too_close: "Too close"
       too_far: "Out of range"
       unknown_distance: "Unknown distance"
+      detected_text: "The detected text is: {text}"
+      no_text: "No text detected."
 
   # Ajoutez d'autres langues ici

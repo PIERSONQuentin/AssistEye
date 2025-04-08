@@ -107,13 +107,31 @@ assist_eye/
    cd AssistEye
    ```
 
+**Option 1 : Installation via pip**
+
 2. Installez les dépendances via pip :
 
    ```bash
    pip install -r requirements.txt
    ```
 
-   *(Assurez-vous d'avoir créé et activé un environnement virtuel si nécessaire.)*
+*(Assurez-vous d'avoir créé et activé un environnement virtuel si nécessaire.)*
+
+**Option 2 : Création d’un environnement Conda**
+
+1. Créez l’environnement :   
+   Exécutez la commande suivante pour créer l'environnement Conda :
+
+   ```bash
+   conda env create -f environment.yml
+   ```
+
+2. Activez l’environnement :   
+   Une fois l'environnement créé, activez-le avec :
+
+   ```bash
+   conda activate assiteye
+   ```
 
 ---
 
